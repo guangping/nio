@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>websocket</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<h1 style="color: red;">websocket</h1>
+<span id="chatlog"></span>
+<input type="text" id="msg">
+<input type="button" value="点击" id="msgBtn"/>
+</body>
+</html>
+<script type="text/javascript" src="resources/js/jquery.js"></script>
+<script type="text/javascript">
+    //建立客户端websocket
+    var ws = new WebSocket("ws://127.0.0.1/chatserver");
+    //定义ws的一些回调函数
+    ws.onopen = function () {
+    };
+    //当有消息传过来时执行的操作
+    ws.onmessage = function (message) {
+        alert(message.data);
+    };
+    function postToServer() {
+        ws.send($('#msg').val());
+    }
+    function closeConnect() {
+        ws.close();
+    }
+
+    $(function () {
+        $('#msgBtn').unbind('click').bind('click', function () {
+            if ($('#msg').val().length == 0) {
+                alert('发送消息不能为空!');
+                return;
+            }
+            postToServer();
+        })
+    })
+</script>
